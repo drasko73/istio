@@ -59,6 +59,7 @@ components:
   ingressGateways:
     - name: istio-ingressgateway
       enabled: true
+      autoscaleEnabled: false
       k8s:
         replicaCount: 3
         image: docker.io/istio/proxyv2:1.26.6
