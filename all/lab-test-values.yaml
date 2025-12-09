@@ -37,8 +37,8 @@ istiod:
       cpu: 500m
       memory: 500Mi
     requests:
-      cpu: 1m
-      memory: 1Mi
+      cpu: 100m
+      memory: 100Mi
   env:
     PILOT_ENABLE_CONFIG_DISTRIBUTION_TRACKING: "true"
     PILOT_ENABLE_XDS_CACHE: "true"
@@ -75,8 +75,8 @@ gateways:
         cpu: 200m
         memory: 256Mi
       requests:
-        cpu: 1m
-        memory: 1Mi
+        cpu: 100m
+        memory: 100Mi
     service:
       type: ClusterIP
 
