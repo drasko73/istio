@@ -63,8 +63,8 @@ gateways:
         cpu: 500m
         memory: 500Mi
       requests:
-        cpu: 1m
-        memory: 1Mi
+        cpu: 200m
+        memory: 200Mi
     service:
       type: NodePort
   istio-egressgateway:
