@@ -1,0 +1,150 @@
+# Production-ready Helm values.yaml matching your IstioOperator parameters with demo profile
+
+global:
+  istioNamespace: istio-system
+  proxy:
+    autoInject: enabled
+    resources:
+      limits:
+        cpu: 500m
+        memory: 500Mi
+      requests:
+        cpu: 1m
+        memory: 1Mi
+  defaultPodDisruptionBudget:
+    enabled: true
+
+base:
+  enabled: true
+  meshConfig:
+    enableProtocolSniffingInbound: true
+    enableProtocolSniffingOutbound: true
+    outboundTrafficPolicy:
+      mode: REGISTRY_ONLY
+    defaultConfig:
+      concurrency: 0
+      holdApplicationUntilProxyStarts: true
+    proxyMetadata:
+      ISTIO_META_DNS_AUTO_ALLOCATE: "true"
+
+istiod:
+  enabled: true
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 500m
+      memory: 500Mi
+    requests:
+      cpu: 1m
+      memory: 1Mi
+  env:
+    PILOT_ENABLE_CONFIG_DISTRIBUTION_TRACKING: "true"
+    PILOT_ENABLE_XDS_CACHE: "true"
+    PILOT_PUSH_THROTTLE: "500ms"
+
+cni:
+  enabled: true
+  namespace: istio-system
+  cniBinDir: /opt/cni/bin
+  cniConfDir: /etc/cni/net.d
+  logLevel: info
+  excludeNamespaces:
+    - kube-system
+    - istio-system
+
+gateways:
+  istio-ingressgateway:
+    enabled: true
+    replicaCount: 3
+    resources:
+      limits:
+        cpu: 500m
+        memory: 500Mi
+      requests:
+        cpu: 1m
+        memory: 1Mi
+    service:
+      type: NodePort
+      ports:
+        - name: status-port
+            nodePort: 32225
+            port: 15021
+            protocol: TCP
+            targetPort: 15021
+        - name: http2
+            nodePort: 32666
+            port: 80
+            protocol: TCP
+            targetPort: 8080
+        - name: https
+            nodePort: 32512
+            port: 443
+            protocol: TCP
+            targetPort: 8443
+        - name: tcp
+            nodePort: 31682
+            port: 31400
+            protocol: TCP
+            targetPort: 31400
+        - name: tls
+            nodePort: 32207
+            port: 15443
+            protocol: TCP
+            targetPort: 15443
+        - name: redis-port1
+            nodePort: 31402
+            port: 11337
+            protocol: TCP
+            targetPort: 16379
+        - name: redis-port2
+            nodePort: 31403
+            port: 11338
+            protocol: TCP
+            targetPort: 16380
+        - name: rabbitmq-port
+            nodePort: 31404
+            port: 11339
+            protocol: TCP
+            targetPort: 5672
+        - name: rabbitmq-port-test
+            nodePort: 31405
+            port: 11400
+            protocol: TCP
+            targetPort: 5672
+        - name: mpc-oracle-gateway-test
+            nodePort: 31406
+            port: 11401
+            protocol: TCP
+            targetPort: 1521
+        - name: rabbitmq-1pos-port
+            nodePort: 31407
+            port: 11402
+            protocol: TCP
+            targetPort: 5673
+        - name: mysql-test
+            nodePort: 31408
+            port: 11403
+            protocol: TCP
+            targetPort: 3306
+  istio-egressgateway:
+    enabled: false
+    replicaCount: 1
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 1m
+        memory: 1Mi
+    service:
+      type: ClusterIP
+
+# Optional telemetry and observability
+prometheus:
+  enabled: false
+grafana:
+  enabled: false
+kiali:
+  enabled: false
+tracing:
+  enabled: false
