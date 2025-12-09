@@ -65,67 +65,6 @@ gateways:
         memory: 1Mi
     service:
       type: NodePort
-      ports:
-        - name: status-port
-          nodePort: 32225
-          port: 15021
-          protocol: TCP
-          targetPort: 15021
-        - name: http2
-          nodePort: 32666
-          port: 80
-          protocol: TCP
-          targetPort: 8080
-        - name: https
-          nodePort: 32512
-          port: 443
-          protocol: TCP
-          targetPort: 8443
-        - name: tcp
-          nodePort: 31682
-          port: 31400
-          protocol: TCP
-          targetPort: 31400
-        - name: tls
-          nodePort: 32207
-          port: 15443
-          protocol: TCP
-          targetPort: 15443
-        - name: redis-port1
-          nodePort: 31402
-          port: 11337
-          protocol: TCP
-          targetPort: 16379
-        - name: redis-port2
-          nodePort: 31403
-          port: 11338
-          protocol: TCP
-          targetPort: 16380
-        - name: rabbitmq-port
-          nodePort: 31404
-          port: 11339
-          protocol: TCP
-          targetPort: 5672
-        - name: rabbitmq-port-test
-          nodePort: 31405
-          port: 11400
-          protocol: TCP
-          targetPort: 5672
-        - name: mpc-oracle-gateway-test
-          nodePort: 31406
-          port: 11401
-          protocol: TCP
-          targetPort: 1521
-        - name: rabbitmq-1pos-port
-          nodePort: 31407
-          port: 11402
-          protocol: TCP
-          targetPort: 5673
-        - name: mysql-test
-          nodePort: 31408
-          port: 11403
-          protocol: TCP
-          targetPort: 3306
   istio-egressgateway:
     enabled: false
     replicaCount: 1
