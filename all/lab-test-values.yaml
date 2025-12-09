@@ -2,7 +2,7 @@
 
 global:
   hub: docker.io/istio
-  tag: 1.23.2
+  tag: 1.26.6
   istioNamespace: istio-system
   proxy:
     autoInject: enabled
