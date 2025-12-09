@@ -32,6 +32,7 @@ base:
 
 istiod:
   enabled: true
+  autoscaleEnabled: false
   replicaCount: 3
   resources:
     limits:
