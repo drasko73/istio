@@ -1,6 +1,8 @@
 # Production-ready Helm values.yaml matching your IstioOperator parameters with demo profile
 
 global:
+  hub: docker.io/istio
+  tag: 1.23.2
   istioNamespace: istio-system
   proxy:
     autoInject: enabled
