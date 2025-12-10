@@ -1,9 +1,9 @@
-# Production-ready Helm values.yaml matching your IstioOperator parameters with demo profile
-
+# Production-ready Helm values.yaml for Istio 1.26.6
 global:
   hub: docker.io/istio
   tag: 1.26.6
   istioNamespace: istio-system
+  
   proxy:
     image: proxyv2
     autoInject: enabled
@@ -14,26 +14,30 @@ global:
       requests:
         cpu: 200m
         memory: 300Mi
+  
   defaultPodDisruptionBudget:
     enabled: true
 
 base:
   enabled: true
-  meshConfig:
-    enableProtocolSniffingInbound: true
-    enableProtocolSniffingOutbound: true
-    outboundTrafficPolicy:
-      mode: REGISTRY_ONLY
-    defaultConfig:
-      concurrency: 0
-      holdApplicationUntilProxyStarts: true
+
+meshConfig:
+  enableProtocolSniffingInbound: true
+  enableProtocolSniffingOutbound: true
+  outboundTrafficPolicy:
+    mode: REGISTRY_ONLY
+  
+  defaultConfig:
+    concurrency: 0
+    holdApplicationUntilProxyStarts: true
     proxyMetadata:
       ISTIO_META_DNS_AUTO_ALLOCATE: "true"
 
-istiod:
+pilot:
   enabled: true
   autoscaleEnabled: false
   replicaCount: 3
+  
   resources:
     limits:
       cpu: 500m
@@ -41,62 +45,63 @@ istiod:
     requests:
       cpu: 300m
       memory: 300Mi
+  
   env:
     PILOT_ENABLE_CONFIG_DISTRIBUTION_TRACKING: "true"
     PILOT_ENABLE_XDS_CACHE: "true"
     PILOT_PUSH_THROTTLE: "500ms"
 
+# CNI DISABLED - This will remove the istio-system pod
 cni:
-  enabled: true
-  namespace: istio-system
-  cniBinDir: /opt/cni/bin
-  cniConfDir: /etc/cni/net.d
-  logLevel: info
-  excludeNamespaces:
-    - kube-system
-    - istio-system
+  enabled: false
 
-components:
-  ingressGateways:
-    - name: istio-ingressgateway
-      enabled: true
-      autoscaleEnabled: false
-      k8s:
-        replicaCount: 3
-        image: docker.io/istio/proxyv2:1.26.6
-        resources:
-          requests:
-            cpu: 200m
-            memory: 200Mi
-          limits:
-            cpu: 500m
-            memory: 500Mi
-        service:
-          type: NodePort
+# Ingress Gateway
+ingressGateways:
+  - name: istio-ingressgateway
+    enabled: true
+    autoscaleEnabled: false
+    
+    k8s:
+      replicaCount: 3
+      resources:
+        requests:
+          cpu: 200m
+          memory: 200Mi
+        limits:
+          cpu: 500m
+          memory: 500Mi
+      service:
+        type: NodePort
 
-  egressGateways:
-    - name: istio-egressgateway
-      enabled: false
-      k8s:
-        replicaCount: 1
-        image: docker.io/istio/proxyv2:1.26.6
-        resources:
-          requests:
-            cpu: 200m
-            memory: 200Mi
-          limits:
-            cpu: 500m
-            memory: 500Mi
-        service:
-          type: ClusterIP
+# Egress Gateway
+egressGateways:
+  - name: istio-egressgateway
+    enabled: false
+    
+    k8s:
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 200m
+          memory: 200Mi
+        limits:
+          cpu: 500m
+          memory: 500Mi
+      service:
+        type: ClusterIP
 
-# Optional telemetry and observability
+# Telemetry and observability - all disabled
+telemetry:
+  enabled: false
+
 prometheus:
   enabled: false
+
 grafana:
   enabled: false
+
 kiali:
   enabled: false
+
 tracing:
   enabled: false
-
