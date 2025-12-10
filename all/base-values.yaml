@@ -25,11 +25,9 @@ istiod:
     enableProtocolSniffingOutbound: true
 
 # -----------------------------------------------------
-# GATEWAY settings
+# INGRESS GATEWAY settings
 # -----------------------------------------------------
-gateway:
-  name: istio-ingressgateway
-  enabled: true
+istio-ingressgateway:
   replicaCount: 3
 
   service:
