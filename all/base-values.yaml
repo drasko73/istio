@@ -18,7 +18,6 @@ istiod:
 # GATEWAY settings
 # -----------------------------------------------------
 gateway:
-  autoscaleEnabled: false
   name: istio-ingressgateway
   service:
     type: NodePort
