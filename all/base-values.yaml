@@ -1,5 +1,13 @@
 # -----------------------------------------------------
-# BASE settings
+# GLOBAL settings
+# -----------------------------------------------------
+global:
+  hub: docker.io/istio
+  tag: 1.26.6
+  istioNamespace: istio-system
+
+# -----------------------------------------------------
+# BASE chart
 # -----------------------------------------------------
 base:
   enabled: true
@@ -8,11 +16,13 @@ base:
 # ISTIOD settings
 # -----------------------------------------------------
 istiod:
-  global:
-    istioNamespace: istio-system
   pilot:
     autoscaleEnabled: false
     traceSampling: 1.0
+
+  meshConfig:
+    enableProtocolSniffingInbound: true
+    enableProtocolSniffingOutbound: true
 
 # -----------------------------------------------------
 # GATEWAY settings
@@ -32,8 +42,6 @@ gateway:
       - name: https
         port: 443
         targetPort: 8443
-
-# Labels for the gateway
   labels:
     app: istio-ingressgateway
     istio: ingressgateway
