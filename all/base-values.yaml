@@ -26,6 +26,7 @@ istiod:
 
 # Gateway (do NOT add 'enabled' or 'name')
 gateway:
+  name: istio-ingressgateway
   replicaCount: 3
   resources:
     requests:
