@@ -20,6 +20,7 @@ global:
 
 base:
   enabled: true
+  profile: demo
 
 meshConfig:
   enableProtocolSniffingInbound: true
