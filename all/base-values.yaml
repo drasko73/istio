@@ -29,13 +29,8 @@ istiod:
 # -----------------------------------------------------
 gateway:
   name: istio-ingressgateway
-
-  deployment:
-    replicas: 3
-    image:
-      repository: docker.io/istio/proxyv2
-      tag: 1.26.6
-      pullPolicy: IfNotPresent
+  enabled: true
+  replicaCount: 3
 
   service:
     type: NodePort
@@ -46,6 +41,14 @@ gateway:
       - name: https
         port: 443
         targetPort: 8443
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 200Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
 
   labels:
     app: istio-ingressgateway
