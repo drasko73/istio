@@ -3,13 +3,12 @@ global:
   tag: 1.26.6
   istioNamespace: istio-system
 
-# Base
+# Base CRDs
 base:
   enabled: true
 
 # Istiod
 istiod:
-  enabled: true
   replicaCount: 3
   resources:
     requests:
@@ -25,10 +24,8 @@ istiod:
     enableProtocolSniffingInbound: true
     enableProtocolSniffingOutbound: true
 
-# Gateway
+# Gateway (do NOT add 'enabled' or 'name')
 gateway:
-  enabled: true
-  name: istio-ingressgateway
   replicaCount: 3
   resources:
     requests:
@@ -46,6 +43,9 @@ gateway:
       - name: https
         port: 443
         targetPort: 8443
+  labels:
+    app: istio-ingressgateway
+    istio: ingressgateway
 
 # CNI
 cni:
