@@ -1,0 +1,3 @@
+  cni:
+    enabled: true
+    provider: default
